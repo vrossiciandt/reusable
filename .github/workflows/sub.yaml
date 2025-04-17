@@ -2,6 +2,10 @@ name: sub
 
 on:
   workflow_call:
+    inputs:
+      secrets_list:
+        required: true
+        description: 'List of secrets'
 
 jobs:
   show-secret-variables:
