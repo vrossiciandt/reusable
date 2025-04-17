@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Parse secrets JSON
-        id: parse_secrets
         run: |
           echo "::set-output name=secrets::$(echo "${{ github.event.inputs.secrets }}" | jq -r '.')"
       - name: Set environment variables

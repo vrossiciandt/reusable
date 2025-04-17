@@ -5,10 +5,10 @@ on:
 
 jobs:
   prepare-env:
+    name: list secrets job
     runs-on: ubuntu-latest
     steps:
       - name: List secrets
-        id: list-secrets
         run: |
           echo "::set-output name=secrets::$(echo "${{ toJson(secrets) }}" | jq -r '. | to_entries | map("\(.key)=\(.value)") | join("\n")')"
 
