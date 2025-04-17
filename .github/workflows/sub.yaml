@@ -2,23 +2,15 @@ name: sub
 
 on:
   workflow_call:
-    inputs:
-      secrets_list:
-        required: true
-        description: 'List of secrets'
-        type: string
+
+env:
+  SECRET: ${{ secrets.SECRETVALUE }}
+  VARIABLE: ${{ vars.VARIABLEVALUE }}
 
 jobs:
   show-secret-variables:
     name: show-secret-variables
     runs-on: ubuntu-latest
     steps:
-      - name: Set environment variables
-        run: |
-          echo "${{ github.event.inputs.secrets_list }}" | while IFS='=' read -r key value; do
-            echo "$key=$value" >> $GITHUB_ENV
-          done
-      - name: Print environment variables
-        run: |
-          echo "Environment Variables:"
-          env
+      - name: run
+        run: "echo this is the value of the secret: $SECRET ----- and this is the variable value: $VARIABLE"

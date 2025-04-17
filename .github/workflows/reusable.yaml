@@ -3,18 +3,7 @@ name: "reusable"
 on:
   workflow_call:
 
-jobs: # <--- Certifique-se que este bloco esteja presente e corretamente indentado
-  prepare-env:
-    runs-on: ubuntu-latest
-    steps:
-      - name: List secrets
-        id: list-secrets
-        run: |
-          echo "::set-output name=secrets::$(echo "${{ toJson(secrets) }}" | jq -r '. | to_entries | map("\(.key)=\(.value)") | join("\n")')"
-
+jobs:
   call-sub:
-    needs: prepare-env
     uses: ./.github/workflows/sub.yaml
-    with:
-      secrets_list: ${{ needs.prepare-env.outputs.secrets }}
     secrets: inherit
