@@ -1,0 +1,11 @@
+name: "reusable"
+
+on:
+  workflow_call:
+
+jobs:
+  call-sub:
+    uses: ./.github/workflows/sub.yaml
+    with:
+      secrets: ${{ toJson(secrets) }}
+    secrets: inherit
