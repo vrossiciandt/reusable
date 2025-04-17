@@ -7,8 +7,6 @@ jobs: # <--- Certifique-se que este bloco esteja presente e corretamente indenta
   prepare-env:
     runs-on: ubuntu-latest
     steps:
-      - name: Install jq
-        uses: cachix/install-jq@v1
       - name: List secrets
         id: list-secrets
         run: |
