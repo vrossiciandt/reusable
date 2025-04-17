@@ -8,16 +8,12 @@ jobs:
     name: show-secret-variables
     runs-on: ubuntu-latest
     steps:
-      - name: Parse secrets JSON
-        run: |
-          echo "::set-output name=secrets::$(echo "${{ github.event.inputs.secrets }}" | jq -r '.')"
       - name: Set environment variables
         run: |
-          echo "::warning title=Secrets::$(echo "${{ steps.parse_secrets.outputs.secrets }}" | jq -r '.')"
-          secrets=$(echo "${{ steps.parse_secrets.outputs.secrets }}" | jq -r '.')
-          echo "$secrets" >> $GITHUB_ENV
-          #Aqui você precisará processar o JSON 'secrets' para criar as variáveis de ambiente
-      - name: run
+          echo "${{ github.event.inputs.secrets_list }}" | while IFS='=' read -r key value; do
+            echo "$key=$value" >> $GITHUB_ENV
+          done
+      - name: Print environment variables
         run: |
-          echo "Listando as variáveis de ambiente:"
+          echo "Environment Variables:"
           env
