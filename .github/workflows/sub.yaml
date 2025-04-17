@@ -6,6 +6,7 @@ on:
       secrets_list:
         required: true
         description: 'List of secrets'
+        type: string
 
 jobs:
   show-secret-variables:
