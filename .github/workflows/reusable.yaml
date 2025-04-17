@@ -4,8 +4,17 @@ on:
   workflow_call:
 
 jobs:
+  prepare-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: List secrets
+        id: list-secrets
+        run: |
+          echo "::set-output name=secrets::$(echo "${{ toJson(secrets) }}" | jq -r '. | to_entries | map("\(.key)=\(.value)") | join("\n")')"
+
   call-sub:
+    needs: prepare-env
     uses: ./.github/workflows/sub.yaml
     with:
-      secrets: ${{ toJson(secrets) }}
+      secrets: ${{ steps.list-secrets.outputs.secrets }}
     secrets: inherit
