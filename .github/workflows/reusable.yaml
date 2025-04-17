@@ -3,19 +3,20 @@ name: "reusable"
 on:
   workflow_call:
 
-jobs:
+jobs: # <--- Certifique-se que este bloco esteja presente e corretamente indentado
   prepare-env:
     runs-on: ubuntu-latest
     steps:
+      - name: Install jq
+        uses: cachix/install-jq@v1
       - name: List secrets
         id: list-secrets
         run: |
           echo "::set-output name=secrets::$(echo "${{ toJson(secrets) }}" | jq -r '. | to_entries | map("\(.key)=\(.value)") | join("\n")')"
 
   call-sub:
-    runs-on: ubuntu-latest
     needs: prepare-env
     uses: ./.github/workflows/sub.yaml
     with:
-      secrets_list: ${{ steps.list-secrets.outputs.secrets }} # Passa como entrada
+      secrets_list: ${{ needs.prepare-env.outputs.secrets }}
     secrets: inherit
